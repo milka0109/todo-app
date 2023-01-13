@@ -11,11 +11,7 @@ export default class App extends React.Component {
     nextId = 4;
 
     state = {
-        items: [
-        { id: 1, description: 'Completed task',created: "17 seconds ago", important: false, done: false },
-        { id: 2, description: 'Editing task', created: "5 minutes ago", important: true, done: false },
-        { id: 3, description: 'Active task', created: "5 minutes ago", important: false, done: false }
-        ],
+        items: [ ],
         filter: 'all',
         search: '',
     };
@@ -111,6 +107,15 @@ export default class App extends React.Component {
             default: return items.filter((item) => item.done)
         }
     }
+
+    clearCompleted = () => {
+        this.setState(({items}) => {
+            const newArr = items.filter((item) => !item.done)
+            return {
+                items: newArr
+            }
+        })
+    }
     
 
     render() {
@@ -138,7 +143,8 @@ export default class App extends React.Component {
                             activeCount={activeCount}
                             filter={filter}
                             onToggleVisible={this.onToggleVisible}
-                            onToggleSelect={this.onToggleSelect} />
+                            onToggleSelect={this.onToggleSelect}
+                            clearCompleted={this.clearCompleted} />
                 </section>
             </section>
             

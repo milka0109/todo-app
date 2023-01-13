@@ -6,7 +6,7 @@ export default class Footer extends React.Component {
 
     render() {
 
-        const { activeCount, filter, onToggleVisible, onToggleSelect } = this.props;
+        const { activeCount, filter, onToggleVisible, onToggleSelect, clearCompleted } = this.props;
 
         return (
             <footer className = "footer">
@@ -14,7 +14,8 @@ export default class Footer extends React.Component {
                 <TasksFilter filter = {filter}
                         onToggleVisible = {onToggleVisible}
                         onToggleSelect = {onToggleSelect} />
-                <button className = "clear-completed">Clear completed</button>
+                <button className = "clear-completed"
+                        onClick={clearCompleted} >Clear completed</button>
             </footer>
         )
     }
