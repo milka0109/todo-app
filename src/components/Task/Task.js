@@ -1,8 +1,27 @@
 import React from "react";
 import { formatDistanceToNow } from 'date-fns';
+import PropTypes from 'prop-types';
 import './Task.css';
 
 export default class Task extends React.Component {
+
+    static defaultProps = {
+        description: '',
+        created: Date.now(),
+        done: false,
+        onToggleDone: () => {},
+        onToggleEditable: () => {},
+        deleteItem: () => {},
+    };
+
+    static propTypes = {
+        description: PropTypes.string,
+        created: PropTypes.number,
+        done: PropTypes.bool,
+        onToggleDone: PropTypes.func,
+        onToggleEditable: PropTypes.func,
+        deleteItem: PropTypes.func,
+    };
 
     onCheckDone = (status) => {
         if (status) return true

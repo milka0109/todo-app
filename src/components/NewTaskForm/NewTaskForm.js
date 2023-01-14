@@ -1,7 +1,16 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import "./NewTaskForm.css";
 
 export default class NewTaskForm extends React.Component {
+
+    static defaultProps = {
+        onSubmit: () => {},
+    };
+
+    static propTypes = {
+        onSubmit: PropTypes.func,
+    };
 
     render() {
 
