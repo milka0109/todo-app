@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './TaskList.css';
 import Task from '../Task';
@@ -8,7 +9,6 @@ export default class TaskList extends React.Component {
   static defaultProps = {
     items: [],
     onToggleDone: () => {},
-    onToggleEditable: () => {},
     deleteItem: () => {},
   };
 
@@ -23,29 +23,27 @@ export default class TaskList extends React.Component {
       })
     ),
     onToggleDone: PropTypes.func,
-    onToggleEditable: PropTypes.func,
     deleteItem: PropTypes.func,
   };
 
   render() {
-    const { items, onToggleDone, onToggleEditable, deleteItem } = this.props;
+    const { items, onToggleDone, deleteItem } = this.props;
 
-    const elements = items.map(({ id, ...itemProps }) => {
-      let classNames = '';
-      if (itemProps.done) classNames += 'completed';
+    return (
+      <ul className="todo-list">
+        {items.map(({ id, ...itemProps }) => {
+          const labels = classNames({
+            completed: itemProps.done,
+            editing: itemProps.editable,
+          });
 
-      return (
-        <li key={id} className={classNames}>
-          <Task
-            {...itemProps}
-            onToggleDone={() => onToggleDone(id)}
-            onToggleEditable={() => onToggleEditable(id)}
-            deleteItem={() => deleteItem(id)}
-          />
-        </li>
-      );
-    });
-
-    return <ul className="todo-list">{elements}</ul>;
+          return (
+            <li key={id} className={labels}>
+              <Task {...itemProps} onToggleDone={() => onToggleDone(id)} deleteItem={() => deleteItem(id)} />
+            </li>
+          );
+        })}
+      </ul>
+    );
   }
 }

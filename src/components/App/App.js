@@ -6,14 +6,6 @@ import NewTaskForm from '../NewTaskForm';
 import Footer from '../Footer';
 
 export default class App extends React.Component {
-  static toggleProperty(arr, id, propName) {
-    const idx = arr.findIndex((item) => item.id === id);
-    const oldItem = arr[idx];
-    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
-
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
-  }
-
   nextId = 1;
 
   constructor() {
@@ -26,14 +18,7 @@ export default class App extends React.Component {
 
   onToggleDone = (id) => {
     this.setState((state) => {
-      const items = App.toggleProperty(state.items, id, 'done');
-      return { items };
-    });
-  };
-
-  onToggleEditable = (id) => {
-    this.setState((state) => {
-      const items = App.toggleProperty(state.items, id, 'editable');
+      const items = this.toggleProperty(state.items, id, 'done');
       return { items };
     });
   };
@@ -57,14 +42,6 @@ export default class App extends React.Component {
         items: newArr,
       };
     });
-  };
-
-  onSubmit = (evt) => {
-    if (evt.keyCode === 13 && evt.target.value !== '') {
-      this.addItem(evt.target.value);
-      // eslint-disable-next-line no-param-reassign
-      evt.target.value = '';
-    }
   };
 
   onToggleVisible = (selector) => {
@@ -97,6 +74,14 @@ export default class App extends React.Component {
     });
   };
 
+  toggleProperty(arr, id, propName) {
+    const idx = arr.findIndex((item) => item.id === id);
+    const oldItem = arr[idx];
+    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
+  }
+
   createTodoItem(description) {
     return {
       description,
@@ -118,13 +103,7 @@ export default class App extends React.Component {
         <NewTaskForm addItem={this.addItem} onSubmit={this.onSubmit} />
 
         <section className="main">
-          <TaskList
-            items={visibleList}
-            onToggleDone={this.onToggleDone}
-            onToggleEditable={this.onToggleEditable}
-            deleteItem={this.deleteItem}
-            onSubmit={this.onSubmit}
-          />
+          <TaskList items={visibleList} onToggleDone={this.onToggleDone} deleteItem={this.deleteItem} />
 
           <Footer
             activeCount={activeCount}

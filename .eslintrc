@@ -27,6 +27,7 @@
 	  "prettier/prettier": "error",
 	  "linebreak-style": [0, "unix"],
 	  "no-plusplus": "off",
+	  "class-methods-use-this": "off",
 	  "jsx-a11y/label-has-associated-control": "off",
 	  "jsx-a11y/no-autofocus": "off",
 	  "quotes": ["error", "single"],
