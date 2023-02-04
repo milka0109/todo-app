@@ -16,6 +16,14 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.updateTime();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   onToggleDone = (id) => {
     this.setState((state) => {
       const items = this.toggleProperty(state.items, id, 'done');
@@ -23,8 +31,11 @@ export default class App extends React.Component {
     });
   };
 
-  addItem = (description) => {
-    const newItem = this.createTodoItem(description);
+  getTime = (minutes, seconds) => +minutes * 60 + +seconds;
+
+  addItem = (description, minutes, seconds) => {
+    const timeInSec = this.getTime(minutes, seconds);
+    const newItem = this.createTodoItem(description, timeInSec);
 
     this.setState(({ items }) => {
       const newArr = [...items, newItem];
@@ -74,17 +85,46 @@ export default class App extends React.Component {
     });
   };
 
-  toggleProperty(arr, id, propName) {
+  onPlay = (id) => {
+    this.setState(({ items }) => ({ items: this.toggleProperty(items, id, 'isTimerOn', true) }));
+  };
+
+  onPause = (id) => {
+    this.setState(({ items }) => ({ items: this.toggleProperty(items, id, 'isTimerOn', false) }));
+  };
+
+  updateTime = () => {
+    this.interval = setInterval(() => {
+      this.setState(({ items }) => {
+        const newArr = items.map((item) => {
+          if (item.timeInSec === 0 || item.done) {
+            return item;
+          }
+          if (item.isTimerOn) {
+            // eslint-disable-next-line no-param-reassign
+            item.timeInSec -= 1;
+          }
+          return item;
+        });
+        return {
+          items: newArr,
+        };
+      });
+    }, 1000);
+  };
+
+  toggleProperty = (arr, id, propName, value = !arr[arr.findIndex((item) => item.id === id)][propName]) => {
     const idx = arr.findIndex((item) => item.id === id);
     const oldItem = arr[idx];
-    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
-
+    const newItem = { ...oldItem, [propName]: value };
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
-  }
+  };
 
-  createTodoItem(description) {
+  createTodoItem(description, timeInSec) {
     return {
       description,
+      timeInSec,
+      isTimerOn: false,
       created: Date.now(),
       done: false,
       editable: false,
@@ -100,10 +140,16 @@ export default class App extends React.Component {
 
     return (
       <section className="todoapp">
-        <NewTaskForm addItem={this.addItem} onSubmit={this.onSubmit} />
+        <NewTaskForm addItem={this.addItem} />
 
         <section className="main">
-          <TaskList items={visibleList} onToggleDone={this.onToggleDone} deleteItem={this.deleteItem} />
+          <TaskList
+            items={visibleList}
+            onToggleDone={this.onToggleDone}
+            deleteItem={this.deleteItem}
+            onPlay={this.onPlay}
+            onPause={this.onPause}
+          />
 
           <Footer
             activeCount={activeCount}

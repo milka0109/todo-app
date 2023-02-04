@@ -1,0 +1,53 @@
+.todo-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+label {
+    cursor: default;
+}
+
+.todo-list li .wrapper .description {
+    font-size: 13px;
+    color: gray;
+}
+
+.todo-list li .icon {
+    width: 30px;
+    height: 40px;
+    color: #cc9a9a;
+    margin: auto 0;
+    transition: color 0.2s ease-out;
+    cursor: pointer;
+}
+
+.todo-list li .icon-pause, .todo-list li .icon-play {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.todo-list li .icon-play {
+    font-size: 16px;
+    transform: translate(-15px, 0px);
+}
+
+.todo-list li .icon-pause {
+    font-size: 17px;
+    transform: translate(3px, -3px);
+}
+
+.timer {
+    transform: translate(30px, 3px);
+    color: gray;
+    font-size: 13px;
+}
+
+.icon-pause:after {
+    content: '⏸';
+}
+
+.icon-play:after {
+    content: '▶';
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
-import './Task.css';
+
+import TaskTimer from '../TaskTimer';
 
 export default class Task extends React.Component {
   static defaultProps = {
@@ -21,7 +22,7 @@ export default class Task extends React.Component {
   };
 
   render() {
-    const { description, done, created, onToggleDone, deleteItem } = this.props;
+    const { description, done, created, onToggleDone, deleteItem, onPlay, onPause, timeInSec } = this.props;
     const thisMuchAgo = formatDistanceToNow(created, { addSuffix: true });
 
     return (
@@ -29,6 +30,7 @@ export default class Task extends React.Component {
         <input type="checkbox" className="toggle" onClick={onToggleDone} defaultChecked={done} />
         <label>
           <span className="description">{description}</span>
+          <TaskTimer timeInSec={timeInSec} onPlay={onPlay} onPause={onPause} />
           <span className="created">created {thisMuchAgo}</span>
         </label>
         <button type="button" aria-label="Edit" className="icon icon-edit" />

@@ -27,7 +27,7 @@ export default class TaskList extends React.Component {
   };
 
   render() {
-    const { items, onToggleDone, deleteItem } = this.props;
+    const { items, onToggleDone, deleteItem, onPlay, onPause } = this.props;
 
     return (
       <ul className="todo-list">
@@ -39,7 +39,13 @@ export default class TaskList extends React.Component {
 
           return (
             <li key={id} className={labels}>
-              <Task {...itemProps} onToggleDone={() => onToggleDone(id)} deleteItem={() => deleteItem(id)} />
+              <Task
+                {...itemProps}
+                onToggleDone={() => onToggleDone(id)}
+                deleteItem={() => deleteItem(id)}
+                onPlay={() => onPlay(id)}
+                onPause={() => onPause(id)}
+              />
             </li>
           );
         })}
